@@ -1,7 +1,31 @@
-.animes {
-  list-style: none;
+body {
+  background: #333;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  margin: 0;
+  padding: 0;
 }
 
-.animes li {
-  
+.animes {
+  width: 400px;
+  height: 600px;
+
+  list-style: none;
+  overflow-y: scroll;
+  padding: 0;
+}
+
+.animes li a {
+  display: block;
+
+  text-decoration: none;
+  padding: 10px;
+  color: #fff;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.animes li a:hover {
+  background: #222;
 }
