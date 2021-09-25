@@ -14,10 +14,10 @@ const getMovies = async () => {
   ))
   await browser.close()
 
-  const favorites = getFavorites().map(favorite => favorite.toLowerCase())
+  const favorites = getFavorites()
 
-  const moviesLi = movies.map(movie => {
-    return parse(`
+  const moviesLi = movies.map(movie => 
+    parse(`
       <li class="${
         favorites.some(favorite => movie.title.toLowerCase().includes(favorite))
           ? "highlight" 
@@ -27,7 +27,7 @@ const getMovies = async () => {
         </a>
       </li>
     `)
-  })
+  )
 
   return moviesLi
 }

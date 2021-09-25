@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer'
 import { parse } from 'node-html-parser'
+import getFavorites from './getFavorites'
 
 const getAnimes = async () => {
   const browser = await puppeteer.launch()
@@ -14,11 +15,18 @@ const getAnimes = async () => {
   ))
   await browser.close()
 
+  const favorites = getFavorites()
+
   const animesLi = animes.map(anime => 
     parse(`
-      <li><a href="${anime.href}" target="_blank">
-        ${anime.title} - ${anime.episode}
-      </a></li>
+      <li class="${
+        favorites.some(favorite => anime.title?.toLowerCase().includes(favorite))
+          ? "highlight" 
+          : ""}">
+        <a href="${anime.href}" target="_blank">
+          ${anime.title} - ${anime.episode}
+        </a>
+      </li>
     `))
 
   return animesLi
