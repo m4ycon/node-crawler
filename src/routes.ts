@@ -1,6 +1,6 @@
 import express from 'express'
-import path from 'path'
 import getAnimes from './controllers/getAnimes'
+import getFavorites from './controllers/getFavorites'
 import getMainPage from './controllers/getMainPage'
 import getMovies from './controllers/getMovies'
 

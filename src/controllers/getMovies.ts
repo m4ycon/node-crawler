@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer'
 import { parse } from 'node-html-parser'
-import getMainPage from './getMainPage'
+import getFavorites from './getFavorites'
 
 const getMovies = async () => {
   const browser = await puppeteer.launch()
@@ -14,12 +14,20 @@ const getMovies = async () => {
   ))
   await browser.close()
 
-  const moviesLi = movies.map(movie => 
-    parse(`
-      <li><a href="${movie.href}" target="_blank">
-        ${movie.title}
-      </a></li>
-    `))
+  const favorites = getFavorites().map(favorite => favorite.toLowerCase())
+
+  const moviesLi = movies.map(movie => {
+    return parse(`
+      <li class="${
+        favorites.some(favorite => movie.title.toLowerCase().includes(favorite))
+          ? "highlight" 
+          : ""}">
+        <a href="${movie.href}" target="_blank">
+          ${movie.title}
+        </a>
+      </li>
+    `)
+  })
 
   return moviesLi
 }
