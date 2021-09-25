@@ -29,7 +29,11 @@ body {
   background: #555;
 }
 
-.animes {
+.ul-main-container {
+  display: flex;
+}
+
+.list {
   width: 400px;
   height: 600px;
 
@@ -38,7 +42,7 @@ body {
   padding: 0;
 }
 
-.animes li a {
+.list li a {
   display: block;
 
   text-decoration: none;
@@ -47,6 +51,11 @@ body {
   transition: background-color 0.2s ease-in-out;
 }
 
-.animes li a:hover {
+.list li a:hover {
   background: #222;
+}
+
+.highlight {
+  background: rgb(160, 64, 0);
+  color: #fff;
 }

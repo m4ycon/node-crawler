@@ -1,8 +1,5 @@
 import puppeteer from 'puppeteer'
-import path from 'path'
-import fs from 'fs'
 import { parse } from 'node-html-parser'
-import getMainPage from './getMainPage'
 
 const getAnimes = async () => {
   const browser = await puppeteer.launch()
@@ -17,18 +14,14 @@ const getAnimes = async () => {
   ))
   await browser.close()
 
-  const html = getMainPage()
-
-  const animesP = animes.map(anime => 
+  const animesLi = animes.map(anime => 
     parse(`
       <li><a href="${anime.href}" target="_blank">
         ${anime.title} - ${anime.episode}
       </a></li>
     `))
 
-  animesP.forEach(anime => html.querySelector('ul').appendChild(anime))
-
-  return html
+  return animesLi
 }
 
 export default getAnimes
