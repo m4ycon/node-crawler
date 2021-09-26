@@ -1,7 +1,6 @@
 import express from 'express'
+import getMainPage from './utils/getMainPage'
 import getAnimes from './controllers/getAnimes'
-import getFavorites from './controllers/getFavorites'
-import getMainPage from './controllers/getMainPage'
 import getMovies from './controllers/getMovies'
 
 const routes = express.Router()

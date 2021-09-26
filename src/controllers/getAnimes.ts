@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer'
 import { parse } from 'node-html-parser'
-import getFavorites from './getFavorites'
+import getFavorites from '../utils/getFavorites'
 
 const getAnimes = async () => {
   const browser = await puppeteer.launch()
