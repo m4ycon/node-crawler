@@ -1,13 +1,13 @@
 import express from 'express'
+import { getMainPageAnimes } from './controllers/getAnimes'
+import { getMainPageMovies } from './controllers/getMovies'
 import getMainPage from './utils/getMainPage'
-import getAnimes from './controllers/getAnimes'
-import getMovies from './controllers/getMovies'
 
 const routes = express.Router()
 
 routes.get('/', async (req, res) => {
-  const moviesLi = await getMovies()
-  const animesLi = await getAnimes()
+  const moviesLi = await getMainPageMovies()
+  const animesLi = await getMainPageAnimes()
 
   const html = getMainPage()
   moviesLi.forEach(movie => html.querySelector('#movies').appendChild(movie))

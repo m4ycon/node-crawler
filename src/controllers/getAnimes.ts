@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer'
 import { parse } from 'node-html-parser'
 import getFavorites from '../utils/getFavorites'
 
-const getAnimes = async () => {
+export const getMainPageAnimes = async () => {
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
   await page.goto('https://animesonline.org/episodio/')
@@ -32,4 +32,8 @@ const getAnimes = async () => {
   return animesLi
 }
 
-export default getAnimes
+const defaultExport = {
+  getMainPageAnimes,
+}
+
+export default defaultExport

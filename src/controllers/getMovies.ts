@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer'
 import { parse } from 'node-html-parser'
 import getFavorites from '../utils/getFavorites'
 
-const getMovies = async () => {
+export const getMainPageMovies = async () =>  {
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
   await page.goto('https://comandotorrents.com.br/')
@@ -32,4 +32,8 @@ const getMovies = async () => {
   return moviesLi
 }
 
-export default getMovies
+const defaultExport = {
+  getMainPageMovies,
+}
+
+export default defaultExport
