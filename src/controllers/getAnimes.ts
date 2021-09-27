@@ -10,7 +10,8 @@ export const getMainPageAnimes = async () => {
     divs => divs.map(div => ({
       title: div.querySelector('span.serie')?.innerHTML,
       episode: div.querySelector('h3 a')?.innerHTML,
-      href: div.querySelector('h3 a')?.attributes.getNamedItem('href')?.value,
+      href: 'http://localhost:7777/animes/' 
+        + encodeURIComponent(div.querySelector('h3 a')?.attributes.getNamedItem('href')?.value ?? ''),
     })
   ))
   await browser.close()
@@ -32,8 +33,24 @@ export const getMainPageAnimes = async () => {
   return animesLi
 }
 
+export const getDownloadLinkAnime = async (animeUrl: string) => {
+  const browser = await puppeteer.launch()
+  const page = await browser.newPage()
+  await page.goto(animeUrl)
+  const downloadLink = await page.$eval('div#source-player-1.on iframe',
+    iframe => iframe.attributes.getNamedItem('src')?.value ?? '')
+  const animeTitle = await page.$eval('#info .epih1', h1 => h1.innerHTML)
+  await browser.close()
+
+  return { 
+    animeTitle, 
+    downloadLink: downloadLink.split('/?url=')[1].replace('https', 'http') 
+  }
+}
+
 const defaultExport = {
   getMainPageAnimes,
+  getDownloadLinkAnime,
 }
 
 export default defaultExport
