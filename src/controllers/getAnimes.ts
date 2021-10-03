@@ -5,13 +5,12 @@ import getFavorites from '../utils/getFavorites'
 export const getMainPageAnimes = async () => {
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
-  await page.goto('https://animesonline.org/episodio/')
-  const animes = await page.$$eval('article.item.se.episodes div.data', 
-    divs => divs.map(div => ({
-      title: div.querySelector('span.serie')?.innerHTML,
-      episode: div.querySelector('h3 a')?.innerHTML,
+  await page.goto('https://animesonline.cc/episodio/')
+  const animes = await page.$$eval('article.item.se.episodes div.eptitle h3 a', 
+    anchors => anchors.map(anchor => ({
+      title: anchor.textContent,
       href: 'http://localhost:7777/animes/' 
-        + encodeURIComponent(div.querySelector('h3 a')?.attributes.getNamedItem('href')?.value ?? ''),
+        + encodeURIComponent(anchor.attributes.getNamedItem('href')?.value ?? ''),
     })
   ))
   await browser.close()
@@ -25,7 +24,7 @@ export const getMainPageAnimes = async () => {
           ? "highlight" 
           : ""}">
         <a href="${anime.href}" target="_blank">
-          ${anime.title} - ${anime.episode}
+          ${anime.title}
         </a>
       </li>
     `))
@@ -33,24 +32,22 @@ export const getMainPageAnimes = async () => {
   return animesLi
 }
 
-export const getDownloadLinkAnime = async (animeUrl: string) => {
+export const getLinkAnime = async (animeUrl: string) => {
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
   await page.goto(animeUrl)
-  const downloadLink = await page.$eval('div#source-player-1.on iframe',
-    iframe => iframe.attributes.getNamedItem('src')?.value ?? '')
-  const animeTitle = await page.$eval('#info .epih1', h1 => h1.innerHTML)
-  await browser.close()
+  const link = await page.$eval(
+    '#option-1 iframe', 
+    iframe => iframe.attributes.getNamedItem('src')?.value ?? ''
+  )
+  browser.close()      
 
-  return { 
-    animeTitle, 
-    downloadLink: downloadLink.split('/?url=')[1].replace('https', 'http') 
-  }
+  return link
 }
 
 const defaultExport = {
   getMainPageAnimes,
-  getDownloadLinkAnime,
+  getDownloadLinkAnime: getLinkAnime,
 }
 
 export default defaultExport
