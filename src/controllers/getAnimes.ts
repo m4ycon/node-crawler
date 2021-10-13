@@ -33,16 +33,29 @@ export const getMainPageAnimes = async () => {
 }
 
 export const getLinkAnime = async (animeUrl: string) => {
-  const browser = await puppeteer.launch()
+  // puppeteer.use(StealthPlugin())
+  // puppeteer.use(AdblockerPlugin({ blockTrackers: true }))
+
+  const browser = await puppeteer.launch({
+    // headless: false, 
+    executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
+  })
   const page = await browser.newPage()
   await page.goto(animeUrl)
   const link = await page.$eval(
     '#option-1 iframe', 
     iframe => iframe.attributes.getNamedItem('src')?.value ?? ''
   )
-  browser.close()      
+  await page.goto(link)
 
-  return link
+  const html = await page.content()
+  const videoLinks = html.match(/"play_url":"([^"]*)"/)
+  const videoLink = videoLinks 
+    ? JSON.parse('{' + videoLinks[0] + '}').play_url
+    : ''
+
+  await browser.close()
+  return videoLink
 }
 
 const defaultExport = {
