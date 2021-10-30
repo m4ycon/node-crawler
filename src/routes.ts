@@ -1,4 +1,9 @@
 import express from 'express'
+import fs from 'fs'
+import path from 'path'
+import http from 'http'
+import stream from 'stream'
+import download from 'download'
 
 import { getLinkAnime, getMainPageAnimes } from './controllers/getAnimes'
 import { getMainPageMovies } from './controllers/getMovies'
@@ -19,9 +24,17 @@ routes.get('/', async (req, res) => {
 
 routes.get('/animes/:url', async (req, res) => {
   const { url } = req.params
-  const link = await getLinkAnime(url)
+  const downloadLink = await getLinkAnime(url)
+  const filePath = fs.createWriteStream(
+    path.resolve('D:', 'Torrent', 'video.mp4')
+  )
 
-  res.redirect(link)
+  // download(downloadLink).pipe(filePath)
+  //   .on('close', () => console.log('Download complete'))
+  // await download(downloadLink, path.resolve('D:', 'Torrent'))
+
+  // console.log(downloadLink)
+  res.redirect(downloadLink)
 })
 
 export default routes
